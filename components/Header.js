@@ -2,24 +2,49 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
 const GET_QUERY = gql`
-  query {
-    users {
+  query GetOrgById($orgId: ID!){
+    getOrgById(orgId: $orgId) {
+      orgId
       name
+      events {
+        eventId
+        name
+        org {
+          orgId
+        }
+        positions {
+          posId
+          name
+          volunteer
+        }
+      }
     }
-    message
   }
 `;
 
 export default function Header({ title }) {
 
-  const { loading, error, data } = useQuery(GET_QUERY);
+  const { loading, error, data } = useQuery(GET_QUERY, {
+    variables: {
+      orgId: 2
+    }
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-
+  
+  const org = data.getOrgById
   return (
-    data.users.map(user => (
-      <h1>{user.name}</h1>
-    ))
+    <>
+      <h1>{org.name}</h1>
+      {org.events.map(event => (
+        <>
+          <h3>{event.name}</h3>
+          {event.positions.map(pos => (
+            <p>{pos.posId}</p>
+          ))}
+        </>
+      ))}
+    </>
   )
 }
