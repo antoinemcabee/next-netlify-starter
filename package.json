@@ -13,6 +13,8 @@
     "@apollo/react-hooks": "^4.0.0",
     "apollo-boost": "^0.4.9",
     "apollo-server-micro": "^2.18.2",
+    "graphql-tools": "^7.0.1",
+    "mongodb": "^3.6.3",
     "next": "^9.5.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",

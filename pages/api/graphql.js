@@ -1,27 +1,64 @@
 import { ApolloServer, gql } from 'apollo-server-micro'
+import { makeExecutableSchema } from 'graphql-tools'
+import { MongoClient } from 'mongodb'
 
 const typeDefs = gql`
-  type Query {
-    users: [User!]!
-    message: String
+  type Orgs {
+    id: ID!
+    orgName: String!
+    orgCity: String!
+    orgState: String!
   }
-  type User {
-    name: String
+
+  type Query {
+    orgs: [Orgs]!
   }
 `
 
 const resolvers = {
   Query: {
-    users(parent, args, context) {
-      return [{ name: 'Nextjs' }, {name: "Other"}]
+    orgs(_parent, _args, _context, _info) {
+      return _context.db
+        .collection('orgs')
+        .findOne()
+        .then((data) => {
+          console.log(data._id)
+          return data.orgCity
+        })
     },
-    message(parent, args, context) {
-      return "This is a message"
-    }
   },
 }
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers })
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+})
+
+let db
+
+const apolloServer = new ApolloServer({
+  schema,
+  context: async () => {
+    if (!db) {
+      try {
+        const dbClient = new MongoClient(
+          'mongodb+srv://dbadmin:sSWC75Sb5MJF0lo0@cluster0.aqyod.mongodb.net/<dbname>?retryWrites=true&w=majority',
+          {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          }
+        )
+
+        if (!dbClient.isConnected()) await dbClient.connect()
+        db = dbClient.db('volunteer_site') // database name
+      } catch (e) {
+        console.log('--->error while connecting with graphql context (db)', e)
+      }
+    }
+
+    return { db }
+  },
+})
 
 export const config = {
   api: {
