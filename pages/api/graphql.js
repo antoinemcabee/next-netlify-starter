@@ -2,6 +2,8 @@ import { ApolloServer, gql } from 'apollo-server-micro'
 import { makeExecutableSchema } from 'graphql-tools'
 import { MongoClient } from 'mongodb'
 
+require('dotenv').config()
+
 const typeDefs = gql`
   type Orgs {
     id: ID!
@@ -51,9 +53,7 @@ const apolloServer = new ApolloServer({
   context: async () => {
     if (!db) {
       try {
-        const dbClient = new MongoClient(
-          'mongodb+srv://dbadmin:sSWC75Sb5MJF0lo0@cluster0.aqyod.mongodb.net/<dbname>?retryWrites=true&w=majority',
-          {
+        const dbClient = new MongoClient( process.env.MONGO_DB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
           }
