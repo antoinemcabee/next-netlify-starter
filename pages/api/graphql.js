@@ -20,10 +20,20 @@ const resolvers = {
     orgs(_parent, _args, _context, _info) {
       return _context.db
         .collection('orgs')
-        .findOne()
-        .then((data) => {
-          console.log(data._id)
-          return data.orgCity
+        .find().toArray()
+        .then(data => {
+          let results = []
+          data.forEach(result => {
+            let {orgName, orgCity, orgState} = result
+            results.push({
+              id: result._id,
+              orgName,
+              orgCity,
+              orgState,
+            })
+          });
+          console.log(results)
+          return results
         })
     },
   },
