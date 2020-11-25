@@ -9,6 +9,7 @@ const GET_QUERY = gql`
       orgCity
       orgState
     }
+    getOrgByName(orgName: String)
   }
 `;
 

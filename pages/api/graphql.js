@@ -14,6 +14,7 @@ const typeDefs = gql`
 
   type Query {
     orgs: [Orgs]!
+    getOrgByName(orgName: String!): String!
   }
 `
 
@@ -34,10 +35,16 @@ const resolvers = {
               orgState,
             })
           });
-          console.log(results)
+          // console.log(results)
           return results
         })
     },
+    getOrgByName(parent, args, context, info) {
+      return context.db
+        .collection('orgs')
+        .find({ orgName: args.orgName})
+        .then(result => console.log(`Result: ${result}`))
+    }
   },
 }
 
