@@ -1,10 +1,11 @@
-import { ApolloServer, gql } from 'apollo-server-micro';
+import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro';
 
 import {QueryResolvers} from './resolvers/QueryResolvers'
 import {OrgResolvers} from './resolvers/OrgResolvers'
 import {EventResolvers} from './resolvers/EventResolvers'
 import {PositionResolvers} from './resolvers/PositionResolvers'
 
+re
 
 const typeDefs = gql`
   scalar Date
@@ -56,7 +57,32 @@ const resolvers = {
 
 }
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers })
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+})
+
+let db;
+
+const apolloServer = new ApolloServer({ 
+    schema,
+    context: async () => {
+      if (!db) {
+        try {
+          const dbClient = new MongoClient( process.env.MONGO_DB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          })
+
+          !dbClient.isConnected() ? await dbClient.connect() : null
+          db = dbClient.db('volunteer_site')
+          
+        } catch (e) {
+          console.log('--->error while connecting with graphql context (db)', e)
+        }
+      }
+    }
+ })
 
 export const config = {
   api: {
