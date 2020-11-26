@@ -4,8 +4,24 @@ import mockOrgs from '../mocks/mockOrgs';
 
 export const QueryResolvers = {
   getOrgs(parent, args, context) {
-    return mockOrgs
+    return context.db
+      .collection('orgs')
+      .find().toArray()
+      .then(data => {
+        let results = []
+        data.forEach(result => {
+          let {orgName, orgCity, orgState} = result
+          result.push({
+            id: result._id,
+            orgName,
+            orgCity,
+            orgState,
+          })
+        })
+        return results
+      })
   },
+  
   getEvents(parent, args, context) {
     return mockEvents
   },
