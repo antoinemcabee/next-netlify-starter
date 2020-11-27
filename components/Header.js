@@ -41,7 +41,7 @@ export default function Header({ title }) {
         <>
           <h3>{event.name}</h3>
           {event.positions.map(pos => (
-            <p>{pos.posId}</p>
+            <p key={event.name}>{pos.posId}</p>
           ))}
         </>
       ))}

@@ -1,6 +1,7 @@
 import mockPositions from '../mocks/mockPositions';
 import mockEvents from '../mocks/mockEvents';
 import mockOrgs from '../mocks/mockOrgs';
+import { ObjectId } from 'mongodb';
 
 export const QueryResolvers = {
   getOrgs(parent, args, context) {
@@ -10,42 +11,98 @@ export const QueryResolvers = {
       .then(data => {
         let results = []
         data.forEach(result => {
-          let {orgName, orgCity, orgState} = result
-          result.push({
-            id: result._id,
-            orgName,
-            orgCity,
-            orgState,
+          let { name, description, baseLocation } = result
+          results.push({
+            orgId: result._id,
+            name,
+            description,
+            baseLocation,
+          })
+        })
+        
+        return results
+      })
+  },
+
+
+  getEvents(parent, args, context) {
+    return context.db
+      .collection('events')
+      .find().toArray()
+      .then(data => {
+        let results = []
+        data.forEach(result => {
+          let { orgId, eventName, eventLoc, startDate, endDate } = result
+          results.push({
+            eventId: result._id,
+            orgId,
+            eventName,
+            eventLoc,
+            startDate,
+            endDate,
           })
         })
         return results
       })
   },
-  
-  getEvents(parent, args, context) {
-    return mockEvents
-  },
+
+
   getPositions(parent, args, context) {
-    return mockPositions
+    return context.db
+    .collection('positions')
+    .find().toArray()
+    .then(data => {
+      let results = []
+      data.forEach(result => {
+        let { name, eventId, destination, startTime, endTime, filled, volunteer } = result
+        results.push({
+          posId: result._id,
+          eventId,
+          name,
+          destination,
+          startTime,
+          endTime,
+          filled,
+          volunteer,
+        })
+      })
+      return results
+    })
   },
+
+
   getOrgById(parent, args, context) {
-    for(const org of mockOrgs)
-      if(org.orgId == args.orgId)
-        return org;
+    return context.db
+      .collection('orgs')
+      .find({ _id: ObjectId(args.orgId) }).toArray()
+      .then(data => {
+        let res = {}
+        data.forEach(result => res = result)
+        return res
+      })
   },
-  getOrgById(parent, args, context) {
-    for(const org of mockOrgs)
-      if(org.orgId == args.orgId)
-        return org;
-  },
+
+
   getEventById(parent, args, context) {
-    for(const event of mockEvents)
-      if(event.eventId == args.eventId)
-        return event;
+    return context.db
+      .collection('events')
+      .find({ _id: ObjectId(args.eventId) }).toArray()
+      .then(data => {
+        let res = {}
+        data.forEach(result => res = result)
+        return res
+      })
   },
+
+
   getPositionById(parent, args, context) {
-    for(const pos of mockPositions)
-      if(pos.posId == args.posId)
-        return pos;
+    return context.db
+      .collection('positions')
+      .find({ _id: ObjectId(args.posId) }).toArray()
+      .then(data => {
+        let res = {}
+        data.forEach(result => res = result)
+        return res
+      })
   }
 }

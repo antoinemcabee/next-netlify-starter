@@ -1,11 +1,12 @@
 import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro';
+import { MongoClient } from 'mongodb'
 
 import {QueryResolvers} from './resolvers/QueryResolvers'
 import {OrgResolvers} from './resolvers/OrgResolvers'
 import {EventResolvers} from './resolvers/EventResolvers'
 import {PositionResolvers} from './resolvers/PositionResolvers'
 
-re
+require('dotenv').config()
 
 const typeDefs = gql`
   scalar Date
@@ -29,9 +30,9 @@ const typeDefs = gql`
 
   type Event {
     eventId: ID!
-    org: Org
-    name: String
-    location: String
+    orgId: ID!
+    eventName: String
+    eventLoc: String
     startDate: Date
     endDate: Date
     positions: [Position!]
@@ -39,7 +40,7 @@ const typeDefs = gql`
 
   type Position {
     posId: ID!
-    event: Event
+    eventId: ID!
     name: String
     destination: String
     startTime: Date
@@ -74,13 +75,13 @@ const apolloServer = new ApolloServer({
             useUnifiedTopology: true,
           })
 
-          !dbClient.isConnected() ? await dbClient.connect() : null
+          if (!dbClient.isConnected()) await dbClient.connect()
           db = dbClient.db('volunteer_site')
-          
         } catch (e) {
           console.log('--->error while connecting with graphql context (db)', e)
         }
       }
+      return { db }
     }
  })
 
