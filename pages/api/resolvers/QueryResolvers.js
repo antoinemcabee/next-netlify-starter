@@ -74,35 +74,20 @@ export const QueryResolvers = {
   getOrgById(parent, args, context) {
     return context.db
       .collection('orgs')
-      .find({ _id: ObjectId(args.orgId) }).toArray()
-      .then(data => {
-        let res = {}
-        data.forEach(result => res = result)
-        return res
-      })
+      .find({ _id: ObjectId(args.orgId) }).next()
   },
 
 
   getEventById(parent, args, context) {
     return context.db
       .collection('events')
-      .find({ _id: ObjectId(args.eventId) }).toArray()
-      .then(data => {
-        let res = {}
-        data.forEach(result => res = result)
-        return res
-      })
+      .find({ _id: ObjectId(args.eventId) }).next()
   },
 
 
   getPositionById(parent, args, context) {
     return context.db
       .collection('positions')
-      .find({ _id: ObjectId(args.posId) }).toArray()
-      .then(data => {
-        let res = {}
-        data.forEach(result => res = result)
-        return res
-      })
+      .find({ _id: ObjectId(args.posId) }).next()
   }
 }

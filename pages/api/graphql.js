@@ -77,6 +77,7 @@ const apolloServer = new ApolloServer({
 
           if (!dbClient.isConnected()) await dbClient.connect()
           db = dbClient.db('volunteer_site')
+          
         } catch (e) {
           console.log('--->error while connecting with graphql context (db)', e)
         }
