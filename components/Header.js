@@ -6,18 +6,6 @@ const GET_QUERY = gql`
     getOrgById(orgId: $orgId) {
       orgId
       name
-      events {
-        eventId
-        name
-        org {
-          orgId
-        }
-        positions {
-          posId
-          name
-          volunteer
-        }
-      }
     }
   }
 `;
