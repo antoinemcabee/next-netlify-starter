@@ -1,12 +1,23 @@
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import { ObjectId } from "mongodb";
 
 const GET_QUERY = gql`
   query GetOrgById($orgId: ID!){
     getOrgById(orgId: $orgId) {
       orgId
       name
+      events {
+        eventId
+        name
+        org {
+          orgId
+        }
+        positions {
+          posId
+          name
+          volunteer
+        }
+      }
     }
   }
 `;
@@ -15,7 +26,7 @@ export default function Header({ title }) {
 
   const { loading, error, data } = useQuery(GET_QUERY, {
     variables: {
-      orgId: ObjectId('5fb9ced996692eb0bce3183e')
+      orgId: 2
     }
   });
 
@@ -26,6 +37,14 @@ export default function Header({ title }) {
   return (
     <>
       <h1>{org.name}</h1>
+      {org.events.map(event => (
+        <>
+          <h3>{event.name}</h3>
+          {event.positions.map(pos => (
+            <p key={event.name}>{pos.posId}</p>
+          ))}
+        </>
+      ))}
     </>
   )
 }
