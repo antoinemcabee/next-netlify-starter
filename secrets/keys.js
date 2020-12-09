@@ -1,1 +1,0 @@
-const db_connection_uri = 'mongodb+srv://dbadmin:sSWC75Sb5MJF0lo0@cluster0.aqyod.mongodb.net/<dbname>?retryWrites=true&w=majority'

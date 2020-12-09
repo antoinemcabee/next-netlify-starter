@@ -1,51 +1,60 @@
-import { ApolloServer, gql } from 'apollo-server-micro'
-import { makeExecutableSchema } from 'graphql-tools'
+import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro';
 import { MongoClient } from 'mongodb'
+
+import {QueryResolvers} from './resolvers/QueryResolvers'
+import {OrgResolvers} from './resolvers/OrgResolvers'
+import {EventResolvers} from './resolvers/EventResolvers'
+import {PositionResolvers} from './resolvers/PositionResolvers'
 
 require('dotenv').config()
 
 const typeDefs = gql`
-  type Orgs {
-    id: ID!
-    orgName: String!
-    orgCity: String!
-    orgState: String!
-  }
+  scalar Date
 
   type Query {
-    orgs: [Orgs]!
-    getOrgByName(orgName: String!): String!
+    getOrgs: [Org!]
+    getEvents: [Event!]
+    getPositions: [Position!]
+    getOrgById(orgId: ID!): Org
+    getEventById(eventId: ID!): Event
+    getPositionById(posId: ID!): Position
+  }
+
+  type Org {
+    orgId: ID!
+    name: String
+    description: String
+    baseLocation: String
+    events: [Event!]
+  }
+
+  type Event {
+    eventId: ID!
+    orgId: ID!
+    eventName: String
+    eventLoc: String
+    startDate: Date
+    endDate: Date
+    positions: [Position!]
+  } 
+
+  type Position {
+    posId: ID!
+    eventId: ID!
+    name: String
+    destination: String
+    startTime: Date
+    endTime: Date
+    filled: Boolean
+    volunteer: String
   }
 `
 
 const resolvers = {
-  Query: {
-    orgs(_parent, _args, _context, _info) {
-      return _context.db
-        .collection('orgs')
-        .find().toArray()
-        .then(data => {
-          let results = []
-          data.forEach(result => {
-            let {orgName, orgCity, orgState} = result
-            results.push({
-              id: result._id,
-              orgName,
-              orgCity,
-              orgState,
-            })
-          });
-          // console.log(results)
-          return results
-        })
-    },
-    getOrgByName(parent, args, context, info) {
-      return context.db
-        .collection('orgs')
-        .find({ orgName: args.orgName})
-        .then(result => console.log(`Result: ${result}`))
-    }
-  },
+  Query: QueryResolvers,
+  Org: OrgResolvers,
+  Event: EventResolvers,
+  Position: PositionResolvers
 }
 
 const schema = makeExecutableSchema({
@@ -53,29 +62,28 @@ const schema = makeExecutableSchema({
   resolvers,
 })
 
-let db
+let db;
 
-const apolloServer = new ApolloServer({
-  schema,
-  context: async () => {
-    if (!db) {
-      try {
-        const dbClient = new MongoClient( process.env.MONGO_DB_URI, {
+const apolloServer = new ApolloServer({ 
+    schema,
+    context: async () => {
+      if (!db) {
+        try {
+          const dbClient = new MongoClient( process.env.MONGO_DB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-          }
-        )
+          })
 
-        if (!dbClient.isConnected()) await dbClient.connect()
-        db = dbClient.db('volunteer_site') // database name
-      } catch (e) {
-        console.log('--->error while connecting with graphql context (db)', e)
+          if (!dbClient.isConnected()) await dbClient.connect()
+          db = dbClient.db('volunteer_site')
+          
+        } catch (e) {
+          console.log('--->error while connecting with graphql context (db)', e)
+        }
       }
+      return { db }
     }
-
-    return { db }
-  },
-})
+ })
 
 export const config = {
   api: {
