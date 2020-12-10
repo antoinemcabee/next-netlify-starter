@@ -3,24 +3,20 @@ import mockEvents from '../mocks/mockEvents';
 import mockOrgs from '../mocks/mockOrgs';
 import { ObjectId } from 'mongodb';
 
+import {orgMapping, eventMapping, posMapping} from '../mappings'
+
 export const QueryResolvers = {
   getOrgs(parent, args, context) {
     return context.db
       .collection('orgs')
       .find().toArray()
       .then(data => {
-        let results = []
-        data.forEach(result => {
-          let { name, description, baseLocation } = result
-          results.push({
-            orgId: result._id,
-            name,
-            description,
-            baseLocation,
-          })
+        let orgs = []
+        data.forEach(org => {
+          orgs.push(orgMapping(org))
         })
         
-        return results
+        return orgs
       })
   },
 
@@ -30,19 +26,11 @@ export const QueryResolvers = {
       .collection('events')
       .find().toArray()
       .then(data => {
-        let results = []
-        data.forEach(result => {
-          let { orgId, eventName, eventLoc, startDate, endDate } = result
-          results.push({
-            eventId: result._id,
-            orgId,
-            eventName,
-            eventLoc,
-            startDate,
-            endDate,
-          })
+        let events = []
+        data.forEach(event => {
+          events.push(eventMapping(event))
         })
-        return results
+        return events
       })
   },
 
@@ -52,21 +40,11 @@ export const QueryResolvers = {
     .collection('positions')
     .find().toArray()
     .then(data => {
-      let results = []
-      data.forEach(result => {
-        let { name, eventId, destination, startTime, endTime, filled, volunteer } = result
-        results.push({
-          posId: result._id,
-          eventId,
-          name,
-          destination,
-          startTime,
-          endTime,
-          filled,
-          volunteer,
-        })
+      let positions = []
+      data.forEach(pos => {
+        positions.push(posMapping(pos))
       })
-      return results
+      return positions
     })
   },
 
@@ -75,6 +53,9 @@ export const QueryResolvers = {
     return context.db
       .collection('orgs')
       .find({ _id: ObjectId(args.orgId) }).next()
+      .then(org => {
+        return orgMapping(org)
+      })
   },
 
 
@@ -82,6 +63,9 @@ export const QueryResolvers = {
     return context.db
       .collection('events')
       .find({ _id: ObjectId(args.eventId) }).next()
+      .then(event => {
+        return eventMapping(event)
+      })
   },
 
 
@@ -89,5 +73,8 @@ export const QueryResolvers = {
     return context.db
       .collection('positions')
       .find({ _id: ObjectId(args.posId) }).next()
+      .then(pos => {
+        return posMapping(pos)
+      })
   }
 }
