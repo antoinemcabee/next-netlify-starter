@@ -23,8 +23,11 @@ const typeDefs = gql`
   type Org {
     orgId: ID!
     name: String
+    industry: String
+    email: String
+    phone: String
+    addressOne: String
     description: String
-    baseLocation: String
     events: [Event!]
   }
 
@@ -70,7 +73,7 @@ const apolloServer = new ApolloServer({
     context: async () => {
       if (!db) {
         try {
-          const dbClient = new MongoClient( process.env.MONGO_DB_URI, {
+          const dbClient = new MongoClient( process.env.DATABASE_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
           })

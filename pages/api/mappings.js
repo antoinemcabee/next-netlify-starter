@@ -1,10 +1,19 @@
 export const orgMapping = (org) => {
-  let { name, description, baseLocation } = org
+  let { name, 
+        industry,
+        phone,
+        email,
+        addressOne,
+        description,
+      } = org
   return {
     orgId: org._id,
     name,
-    description,
-    baseLocation,
+    industry,
+    phone,
+    email,
+    addressOne,
+    description
   }
 }
 
