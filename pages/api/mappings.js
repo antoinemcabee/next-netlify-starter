@@ -18,11 +18,11 @@ export const orgMapping = (org) => {
 }
 
 export const eventMapping = (event) => {
-  let { orgId, eventName, eventLoc, startDate, endDate } = event
+  let { orgId, name, eventLoc, startDate, endDate } = event
   return {
     eventId: event._id,
     orgId,
-    eventName,
+    name,
     eventLoc,
     startDate,
     endDate,

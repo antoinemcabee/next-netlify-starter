@@ -21,11 +21,34 @@ const options = {
         sendVerificationRequest: ({ identifier: email, url, token, site, provider }) => { sendVerificationRequest( {identifier: email, url, token, site, provider}) }
   
     }),
-    Providers.Auth0({
-      clientId: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      domain: process.env.AUTH0_DOMAIN,
-    }),
+    Providers.Credentials({
+      // The name to display on the sign in form (e.g. 'Sign in with...')
+      name: 'Credentials',
+      // The credentials is used to generate a suitable form on the sign in page.
+      // You can specify whatever fields you are expecting to be submitted.
+      // e.g. domain, username, password, 2FA token, etc.
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: {  label: "Password", type: "password" }
+      },
+      authorize: async (credentials) => {
+        // Add logic here to look up the user from the credentials supplied
+        const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+  
+        if (user) {
+          // Any object returned will be saved in `user` property of the JWT
+          return Promise.resolve(user)
+        } else {
+          // If you return null or false then the credentials will be rejected
+          return Promise.resolve(null)
+          // You can also Reject this callback with an Error or with a URL:
+          // return Promise.reject(new Error('error message')) // Redirect to error page
+          // return Promise.reject('/path/to/redirect')        // Redirect to a URL
+        }
+      }
+    })
+
+
   ],
 
   pages: {
@@ -35,39 +58,6 @@ const options = {
     // verifyRequest: '/auth/verify-request', // (used for check email message)
     newUser: null // If set, new users will be directed here on first sign in
   },
-
-  callbacks: {
-     /**
-   * @param  {object} user     User object
-   * @param  {object} account  Provider account
-   * @param  {object} profile  Provider profile 
-   * @return {boolean}         Return `true` (or a modified JWT) to allow sign in
-   *                           Return `false` to deny access
-   */
-  signIn: async (user, account, profile) => {
-    const isAllowedToSignIn = true
-    if (isAllowedToSignIn) {
-      return Promise.resolve('/testPage')
-    } else {
-      // Return false to display a default error message
-      return Promise.resolve('/testPage')
-      // You can also Reject this callback with an Error or with a URL:
-      // return Promise.reject(new Error('error message')) // Redirect to error page
-      // return Promise.reject('/path/to/redirect')        // Redirect to a URL
-    }
-  },
-  },
-  //   /**
-  //    * @param  {string} url      URL provided as callback URL by the client
-  //    * @param  {string} baseUrl  Default base URL of site (can be used as fallback)
-  //    * @return {string}          URL the client will be redirect to
-  //    */
-  //   redirect: async (url, baseUrl) => {
-  //     return url.startsWith(baseUrl)
-  //       ? Promise.resolve(url)
-  //       : Promise.resolve(baseUrl)
-  //   }
-  // },
 
   database: {
     type: "mongodb",
