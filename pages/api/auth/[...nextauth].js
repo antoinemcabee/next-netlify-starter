@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
-import sendVerificationRequest from '../../../utils/mailer'
 require('dotenv').config()
  
 const options = {
@@ -8,75 +7,54 @@ const options = {
   site: process.env.NEXTAUTH_URL,
 
   providers: [
-    Providers.Email({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
+    Providers.Credentials({
+      name: 'Credentials',
+      authorize: async (credentials) => {
+        
+        const user = credentials
+          // You need to provide your own logic here that takes the credentials
+          // submitted and returns either a object representing a user or value
+          // that is false/null if the credentials are invalid.
+          // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+        if (user) {
+          // Any user object returned here will be saved in the JSON Web Token
+          return Promise.resolve(user)
+        } else {
+          return Promise.resolve(null)
         }
-      },
-      from: process.env.EMAIL_FROM,
-        sendVerificationRequest: ({ identifier: email, url, token, site, provider }) => { sendVerificationRequest( {identifier: email, url, token, site, provider}) }
-  
-    }),
-    Providers.Auth0({
-      clientId: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      domain: process.env.AUTH0_DOMAIN,
-    }),
+      }
+    })
   ],
 
   pages: {
-    // signIn: '/auth/email-signin',
+    signIn: '/auth/signin',
     // signOut: '/auth/signout',
     // error: '/auth/error', // Error code passed in query string as ?error=
-    // verifyRequest: '/auth/verify-request', // (used for check email message)
-    newUser: null // If set, new users will be directed here on first sign in
+    //newUser: null // If set, new users will be directed here on first sign in
   },
 
   callbacks: {
-     /**
-   * @param  {object} user     User object
-   * @param  {object} account  Provider account
-   * @param  {object} profile  Provider profile 
-   * @return {boolean}         Return `true` (or a modified JWT) to allow sign in
-   *                           Return `false` to deny access
-   */
-  signIn: async (user, account, profile) => {
-    const isAllowedToSignIn = true
-    if (isAllowedToSignIn) {
-      return Promise.resolve('/testPage')
-    } else {
-      // Return false to display a default error message
-      return Promise.resolve('/testPage')
-      // You can also Reject this callback with an Error or with a URL:
-      // return Promise.reject(new Error('error message')) // Redirect to error page
-      // return Promise.reject('/path/to/redirect')        // Redirect to a URL
-    }
+    signIn: async (user, account, profile) => {
+      //console.log(user)
+      return Promise.resolve(user)
+    },
+    jwt: async (token, user, account, profile, isNewUser) => {
+      //  "user" parameter is the object received from "authorize"
+      //  "token" is being send below to "session" callback...
+      //  ...so we set "user" param of "token" to object from "authorize"...
+      //  ...and return it...
+      user && (token.user = user);
+      return Promise.resolve(token)   // ...here
+    },
+    session: async (session, user) => {
+      session = user.user
+      return Promise.resolve(session)
+    }, 
   },
-  },
-  //   /**
-  //    * @param  {string} url      URL provided as callback URL by the client
-  //    * @param  {string} baseUrl  Default base URL of site (can be used as fallback)
-  //    * @return {string}          URL the client will be redirect to
-  //    */
-  //   redirect: async (url, baseUrl) => {
-  //     return url.startsWith(baseUrl)
-  //       ? Promise.resolve(url)
-  //       : Promise.resolve(baseUrl)
-  //   }
-  // },
 
-  database: {
-    type: "mongodb",
-    useNewUrlParser: true,
-    url: process.env.DATABASE_URL,
-    ssl: true,
-    useUnifiedTopology: true,
-    authSource: "admin",
-  },
+  session: {
+    jwt: true
+  }
 }
  
 export default (req, res) => NextAuth(req, res, options)

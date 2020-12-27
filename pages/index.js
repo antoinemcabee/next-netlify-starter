@@ -28,7 +28,7 @@ const App = ({ data }) => {
         {
           session && (
             <>
-              Signed in as {session.user.email} <br />
+              Signed in as {session.email} <br />
               <div>You can now access our super secret pages</div>
               <button onClick={signOut}>Sign Out</button>
             </>
