@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {useState, useCallback} from 'react'
-import OrgTrack from '../components/OrgTrack'
-import VolTrack from '../components/VolTrack'
+import OrgTrack from './OrgTrack'
+import VolTrack from './VolTrack'
 
 
 
@@ -9,10 +9,24 @@ export default function SignUpTrack({ loginType }) {
   
   const [signUpData, setSignUpData] = useState({
     orgTrackState: 0,
-    orgData: {},
+    orgData: {
+      name: '',
+      industry: '',
+      phone: '',
+      emial: '',
+      address: '',
+      other: ''
+    },
 
     volTrackState: 0,
-    volData: {}
+    volData: {
+      first: '',
+      last: '',
+      email: '',
+      phone: '',
+      address: '',
+      other:''
+    }
   })
 
   const handleChange = useCallback(({target}, signUpType) => {

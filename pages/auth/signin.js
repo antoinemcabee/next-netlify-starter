@@ -7,9 +7,11 @@ import { getCsrfToken } from 'next-auth/client'
 export default function SignInPage() {
 
     const [csrfToken, setCsrfToken] = useState(null)
-    useEffect( async () => {
-        const csrfToken = await getCsrfToken()
-        setCsrfToken(csrfToken)
+    useEffect(() => {
+        (async () => {
+            const csrfToken = await getCsrfToken()
+            setCsrfToken(csrfToken)
+        })()
     }, [])
 
     if (!csrfToken) return <SignInLoading/>

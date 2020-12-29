@@ -1,4 +1,5 @@
 import {useCallback} from 'react'
+import {LoginInput} from './LoginInput'
 import styled from 'styled-components'
 
 export default function VolTrack({ state, data, handleChange }) {
@@ -12,17 +13,17 @@ export default function VolTrack({ state, data, handleChange }) {
       case 0:
         return (
           <>
-            <StyledInput type='text' name='fisrt' placeholder='First Name' value={data.name} onChange={handleVolChange}/>
-            <StyledInput type='text' name='last' placeholder='Last Name' value={data.industry} onChange={handleVolChange}/>
-            <StyledInput type='text' name='email' placeholder='Organization Email' value={data.email} onChange={handleVolChange}/>
-            <StyledInput type='text' name='phone' placeholder='Organzation Phone' value={data.phone} onChange={handleVolChange}/>
+            <LoginInput type='text' name='fisrt' placeholder='First Name' value={data.name} onChange={handleVolChange}/>
+            <LoginInput type='text' name='last' placeholder='Last Name' value={data.industry} onChange={handleVolChange}/>
+            <LoginInput type='text' name='email' placeholder='Organization Email' value={data.email} onChange={handleVolChange}/>
+            <LoginInput type='text' name='phone' placeholder='Organzation Phone' value={data.phone} onChange={handleVolChange}/>
           </>
         )
       case 1: 
         return (
           <>
-            <StyledInput type='text' name='address' placeholder='1 Address' value={data.address} onChange={handleVolChange}/>
-            <StyledInput type='text' name='other' placeholder='City, State, Zip' value={data.other} onChange={handleVolChange}/>
+            <LoginInput type='text' name='address' placeholder='1 Address' value={data.address} onChange={handleVolChange}/>
+            <LoginInput type='text' name='other' placeholder='City, State, Zip' value={data.other} onChange={handleVolChange}/>
           </>
         )
     }

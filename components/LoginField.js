@@ -1,11 +1,15 @@
 import styled from 'styled-components'
+import {LoginInput} from './LoginInput'
 import {useState, useCallback} from 'react'
 
 
 
 export default function LoginField({ csrfToken, loginType }) {
   
-  const [credentials, setCredentials] = useState({})
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: ''
+  })
 
   const handleChange = useCallback(({target}) => {
     let newCredentials = {...credentials}
@@ -20,8 +24,8 @@ export default function LoginField({ csrfToken, loginType }) {
         <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
         <input name='loginType' type='hidden' defaultValue={loginType}/>
       
-        <StyledInput type='text' name='email' placeholder='Email Address' value={credentials.email} onChange={handleChange}/>
-        <StyledInput type='password' name='password' placeholder='Password' value={credentials.password} onChange={handleChange}/>
+        <LoginInput type='text' name='email' placeholder='Email Address' value={credentials.email} onChange={handleChange}/>
+        <LoginInput type='password' name='password' placeholder='Password' value={credentials.password} onChange={handleChange}/>
         <StyledButton type='submit'>Continue</StyledButton>
       </StyledForm>
       <SignUp>{`Don't have and account? `}<SignUpButton href={'/signup'}>Sign Up</SignUpButton></SignUp>
@@ -43,16 +47,6 @@ const StyledForm = styled.form`
   align-items: center;
   padding: 1em 2em;
   width: 75%;
-`
-
-const StyledInput = styled.input`
-  width: 100%;
-  background: none;
-  color: white;
-  border: none;
-  border-bottom: 1px solid #e1e1e1;
-  margin-top: 3vh;
-  padding: 5px 0;
 `
 
 const StyledButton = styled.button`
