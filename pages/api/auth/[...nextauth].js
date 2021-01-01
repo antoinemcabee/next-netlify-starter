@@ -8,19 +8,6 @@ const options = {
   site: process.env.NEXTAUTH_URL,
 
   providers: [
-    Providers.Email({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
-      },
-      from: process.env.EMAIL_FROM,
-        sendVerificationRequest: ({ identifier: email, url, token, site, provider }) => { sendVerificationRequest( {identifier: email, url, token, site, provider}) }
-  
-    }),
     Providers.Credentials({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'Credentials',
@@ -52,7 +39,7 @@ const options = {
   ],
 
   pages: {
-    // signIn: '/auth/email-signin',
+    signIn: '/auth/credentials-signin',
     // signOut: '/auth/signout',
     // error: '/auth/error', // Error code passed in query string as ?error=
     // verifyRequest: '/auth/verify-request', // (used for check email message)

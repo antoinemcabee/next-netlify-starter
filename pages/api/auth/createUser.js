@@ -28,8 +28,8 @@ const createUser = ({email, password, dbCollection}) => {
                         {
                             email: email,
                             password: hash,
-                            createdAt: Date.now(),
-                            updatedAt:  Date.now(),
+                            createdAt: new Date,
+                            updatedAt:  new Date,
                         }
                     ).catch(err => err)
                         
@@ -45,4 +45,6 @@ const createUser = ({email, password, dbCollection}) => {
     });
 }
 
-export default createUser
+// export default createUser
+
+createUser({email: 'truman1234@antoinemcabee.dev', password: 'test', dbCollection: 'orgAccounts'})

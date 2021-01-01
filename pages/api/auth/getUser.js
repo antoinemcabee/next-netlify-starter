@@ -24,6 +24,7 @@ const getUser = ({email, password, dbCollection}) => {
         if(user == null) {
             console.log("Error: user not found")
             client.close()
+            return null
         } else {
             try {
                 if(await bcrypt.compare(password, user.password)) {
@@ -31,9 +32,9 @@ const getUser = ({email, password, dbCollection}) => {
                     client.close()
                     return user
                 }
-            } catch {
+            } catch (err) {
                 client.close()
-                return null
+                return err || null
             }
         }
     });

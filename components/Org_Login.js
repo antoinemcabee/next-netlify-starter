@@ -2,12 +2,11 @@ import styled from 'styled-components'
 
 export default function SignIn({ csrfToken }) {
   return (
-      <StyledForm method='post' action='http://localhost:3000/api/auth/signin/email'>
+      <StyledForm method='post' action='/api/auth/callback/credentials'>
         {console.log(csrfToken)}
-      <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
-      
-      
-        <StyledInput type='text' id='email' name='email' placeholder='Email' />
+        <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
+        <StyledInput type='text' name='email' placeholder='Email' />
+        <StyledInput type='text' name='password' placeholder='Password' />
       <StyledButton type='submit'>Sign in with Email</StyledButton>
     </StyledForm>
   )
