@@ -55,7 +55,8 @@ module.exports = updateUser
 // const email = "truman1234@antoinemcabee.dev"
 // const dbCollection = "orgAccounts"
 // const update = {
-//     email: 'am@antoinemcabee.dev'
+//     email: 'am@antoinemcabee.dev',
+//     password: "testing122!"
 // }
 
 // const content = {

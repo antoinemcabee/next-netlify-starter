@@ -9,36 +9,41 @@ const MongoClient = require('mongodb').MongoClient;
 
 require('dotenv').config() 
 
-const getUser = ({email, password, dbCollection}) => {
+const getUser = async ({email, password, dbCollection}) => {
 
-    const client = new MongoClient('mongodb+srv://dbadmin:7pd6MzSD5tMf5EzX@cluster0.aqyod.mongodb.net/volunteer_site?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
-    client.connect( async (err) => {
-
-        if(err) return err
-
-        const collection = client.db("volunteer_site").collection(dbCollection)
-
-        user = await collection.findOne({email: email})
-            .catch(err => err)
-
-        if(user == null) {
-            console.log("Error: user not found")
-            client.close()
-            return null
-        } else {
-            try {
-                if(await bcrypt.compare(password, user.password)) {
-                    console.log(`Success. User Logged In:`, user)
-                    client.close()
-                    return user
-                }
-            } catch (err) {
-                client.close()
-                return err || null
-            }
-        }
-    });
+    const client = await MongoClient.connect('mongodb+srv://dbadmin:7pd6MzSD5tMf5EzX@cluster0.aqyod.mongodb.net/volunteer_site?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+        .catch(err => console.log(err))
     
+    if(!client) {
+        return
+    }
+
+    try {
+        const collection = client.db("volunteer_site").collection(dbCollection);
+        let query = { email: email }
+        let user = await collection.findOne(query);
+
+        // bcrypt.compare(password, user.password, (err, res) => {
+             
+        // })
+
+        
+        return  user
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        client.close()
+    }
 }
 
-exports.getUser = getUser
+export default getUser
+
+// async function testFunction() {
+//     const user = await getUser({email: 'am@test.com', password: 'test123!', dbCollection: 'orgAccounts' })
+//     console.log(user)
+
+// }
+
+// testFunction()
+

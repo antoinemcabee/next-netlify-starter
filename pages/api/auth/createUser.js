@@ -45,6 +45,6 @@ const createUser = ({email, password, dbCollection}) => {
     });
 }
 
-// export default createUser
+export default createUser
 
-createUser({email: 'truman1234@antoinemcabee.dev', password: 'test', dbCollection: 'orgAccounts'})
+// createUser({email: 'truman1234@antoinemcabee.dev', password: 'test', dbCollection: 'orgs'})
