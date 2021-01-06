@@ -29,7 +29,7 @@ const options = {
   pages: {
     signIn: '/auth/signin',
     // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
+    error: '/auth/error', // Error code passed in query string as ?error=
     //newUser: null // If set, new users will be directed here on first sign in
   },
 
@@ -37,16 +37,14 @@ const options = {
     signIn: async (user, account, profile) => {
       const dbUser =  await getUser({email: user.email, password: user.password, dbCollection: "orgAccounts"})
       let isAllowedToSignIn = null
-
+      
+      if(dbUser === null) return Promise.resolve(false)
+      
+      user.password = dbUser.password
+      
       if(dbUser) isAllowedToSignIn = true
       if (isAllowedToSignIn) {
         return Promise.resolve(true)
-      } else {
-        // Return false to display a default error message
-        return Promise.reject(false)
-        // You can also Reject this callback with an Error or with a URL:
-        // return Promise.reject(new Error('error message')) // Redirect to error page
-        // return Promise.reject('/path/to/redirect')        // Redirect to a URL
       }
     },
     jwt: async (token, user, account, profile, isNewUser) => {
@@ -58,12 +56,8 @@ const options = {
       return Promise.resolve(token)   // ...here
     },
     session: async (session, user) => {
-      const dbUser =  await getUser({email: user.email, password: user.password, dbCollection: "orgAccounts"})
-      if(dbUser) {
-        user.user.password = dbUser.password
-        delete user.email
-      }
-
+      delete user.email
+      
       session = user
       return Promise.resolve(session)
     }, 

@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import { StyledError } from '../components/StyledText'
+import { ButtonPrimary } from '../components/StyledButtons'
 import {LoginInput} from './LoginInput'
 import {useState, useCallback} from 'react'
 import { validateEmail, validatePassword } from '../utils/formValidation'
@@ -31,8 +33,8 @@ export default function LoginField({ csrfToken, loginType }) {
         <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
         <input name='loginType' type='hidden' defaultValue={loginType}/>
       
-        { emailError ? <StyledError>Invalid Email</StyledError> : null }
-        { passwordError ? <StyledError>{pswdError}</StyledError> : null }
+        { emailError ? <Error>Invalid Email</Error> : null }
+        { passwordError ? <Error>{pswdError}</Error> : null }
 
         <LoginInput err={emailError} type='text' name='email' placeholder='Email Address' value={credentials.email} onChange={handleChange}/>
         <LoginInput err={passwordError} type='password' name='password' placeholder='Password' value={credentials.password} onChange={handleChange}/>
@@ -60,15 +62,9 @@ const StyledForm = styled.form`
   width: 75%;
 `
 
-const StyledButton = styled.button`
-  background: none;
-  border: 1px solid white;
-  border-radius: 5px;
-  padding: 1em 3em;
-  margin-top: 5vh;
-  color: #e1e1e1;
-  font-weight: 600;
-  text-align: center;
+const StyledButton = styled(ButtonPrimary)`
+  margin-top: 3rem;
+  width: 100%;
 `
 const SignUp = styled.div`
   color: #d0d0d0;
@@ -80,9 +76,6 @@ const SignUpButton = styled.a`
   text-decoration: underline;
   cursor: pointer;
 `
-const StyledError = styled.p`
-  color: #E24D4D;
+const Error = styled(StyledError)`
   margin-top: 1.5em;
-  font-size: 13px;
-  text-align: center;
 `

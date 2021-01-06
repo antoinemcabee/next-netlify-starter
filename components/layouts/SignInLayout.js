@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { StyledHeader } from '../../components/StyledText'
 import Tabs from '../../components/Tabs'
 import childrenWithProps from '../../utils/childrenWithProps'
 // import { useAuth } from '../../context/auth-context'
@@ -12,7 +13,7 @@ export default function SignInLayout({children, header}) {
 
   return (
     <Container>
-        <StyledHeader>{header}</StyledHeader>
+        <PageHeader>{header}</PageHeader>
             <Tabs tabData={tabData} />
             {childrenWithProps(children, {loginType: tabTitles[activeTab]})}
         <Copyright>{`© 2021 VolunteerSite.com`}</Copyright>
@@ -28,10 +29,7 @@ const Container = styled.div`
   background-color: #222831;
   height: 100vh;
 `
-const StyledHeader = styled.h1`
-  font-size: 2rem;
-  font-weight: 200;
-  color: #e1e1e1;
+const PageHeader = styled(StyledHeader)`
   padding-top: 15vh;
   padding-bottom: 5vh;
 `   
