@@ -1,14 +1,11 @@
 import {Provider} from 'next-auth/client'
 import { createGlobalStyle } from 'styled-components'
-import { AuthProvider } from '../context/auth-context'
 
 export default function MyApp({ Component, pageProps }) {
     return (
         <Provider session={pageProps.session}>
-            <AuthProvider>
                 <GlobalStyle />
                 <Component {...pageProps} />
-            </AuthProvider>
         </Provider> //passing user session to pages
     )
 }
