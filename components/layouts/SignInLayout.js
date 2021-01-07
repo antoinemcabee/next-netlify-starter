@@ -14,13 +14,17 @@ export default function SignInLayout({children, header}) {
   return (
     <Container>
         <PageHeader>{header}</PageHeader>
-            <Tabs tabData={tabData} />
+            <StyledTab tabData={tabData} />
             {childrenWithProps(children, {loginType: tabTitles[activeTab]})}
         <Copyright>{`© 2021 VolunteerSite.com`}</Copyright>
     </Container>
   )
 
 }
+
+const StyledTab = styled(Tabs)`
+  margin-top: 5rem;
+`
 
 const Container = styled.div`
   display: flex;
@@ -30,7 +34,7 @@ const Container = styled.div`
   height: 100vh;
 `
 const PageHeader = styled(StyledHeader)`
-  padding-top: 15vh;
+  padding-top: 20vh;
   padding-bottom: 5vh;
 `   
 const Copyright = styled.p`

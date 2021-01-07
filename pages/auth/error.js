@@ -7,9 +7,11 @@ import Link from 'next/link'
 const displayError = (error) => {
     switch(error){
         case "AccessDenied":
-            return "User Already Exists"
+            return "User Already Exists or Invalid Password"
         case "TypeError: Cannot read property 'password' of undefined":
-            return "Please enter a username or password and try again, or create an account."
+            return "Please enter a correct username or password and try again, or create an account."
+        default:
+            error
     }
 }
 

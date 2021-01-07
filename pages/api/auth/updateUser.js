@@ -13,7 +13,7 @@ const updateUser = ({email, dbCollection, update}) => {
 
     const client = new MongoClient(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true });
     
-    let hashed = ''
+    let hashed = '' 
 
     if(update.password) {
         bcrypt.hash(update.password, 10, async (err, hash) => {
@@ -53,7 +53,7 @@ module.exports = updateUser
 //----------------------------//
 
 // const email = "truman1234@antoinemcabee.dev"
-// const dbCollection = "orgAccounts"
+// const dbCollection = "orgs"
 // const update = {
 //     email: 'am@antoinemcabee.dev',
 //     password: "testing122!"

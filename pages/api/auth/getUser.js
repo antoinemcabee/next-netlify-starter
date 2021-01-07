@@ -37,7 +37,7 @@ const getUser = async ({email, password, dbCollection}) => {
 export default getUser
 
 // async function testFunction() {
-//     const user = await getUser({email: 'am@test.com', password: 'test123!', dbCollection: 'orgAccounts' })
+//     const user = await getUser({email: 'am@test.com', password: 'test123!', dbCollection: 'orgs' })
 //     console.log(user)
 
 // }

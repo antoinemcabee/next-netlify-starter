@@ -34,6 +34,7 @@ const StyledList = styled.ul`
     display: flex;
     justify-content: space-around;
     width: 100%;
+    margin-top: 4rem;
 `
 const ListItem = styled.div`
     width: 100%;

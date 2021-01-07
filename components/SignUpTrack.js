@@ -2,16 +2,8 @@ import styled from 'styled-components'
 import {useState, useCallback} from 'react'
 import OrgTrack from './OrgTrack'
 import VolTrack from './VolTrack'
-import { useSession, getSession } from 'next-auth/client'
-
 
 export default function SignUpTrack() {
-
-  const [ session, loading ] = useSession()
-
-  if (typeof window !== 'undefined' && loading) return null
-
-  
   
   const [signUpData, setSignUpData] = useState({
     orgTrackState: 0,
@@ -48,10 +40,10 @@ export default function SignUpTrack() {
   return (
     <>
       <StyledForm autoComplete="off">
-        {session.loginType == 'Organization' ?
+        {/* {session.loginType == 'Organization' ? */}
           <OrgTrack state={signUpData.orgTrackState} data={signUpData.orgData} handleChange={handleChange}/> :
           <VolTrack state={signUpData.volTrackState} data={signUpData.volData} handleChange={handleChange}/> 
-        }
+        {/* } */}
       </StyledForm>
     </>
   )

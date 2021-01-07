@@ -35,16 +35,21 @@ const options = {
 
   callbacks: {
     signIn: async (user, account, profile) => {
-      const dbUser =  await getUser({email: user.email, password: user.password, dbCollection: "orgAccounts"})
+      const dbUser =  await getUser({email: user.email, password: user.password, dbCollection: "orgs"})
       let isAllowedToSignIn = null
       
       if(dbUser === null) return Promise.resolve(false)
       
       user.password = dbUser.password
+      user.name = dbUser.name
+      user.industry = dbUser.industry
+      user.phone = dbUser.phone
+      user.address = dbUser.adressOne
+      user.description = dbUser.description
       
       if(dbUser) isAllowedToSignIn = true
       if (isAllowedToSignIn) {
-        return Promise.resolve(true)
+        return Promise.resolve(user)
       }
     },
     jwt: async (token, user, account, profile, isNewUser) => {
@@ -59,6 +64,7 @@ const options = {
       delete user.email
       
       session = user
+
       return Promise.resolve(session)
     }, 
   },

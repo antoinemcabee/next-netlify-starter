@@ -11,3 +11,17 @@ export const StyledError = styled.p`
   font-size: 13px;
   text-align: center;
 `
+
+export const ContentHeader = styled.h2`
+  color: #222831;
+  font-size: 20px;
+  font-weight: 200;
+  letter-spacing: .5px;
+`
+
+export const TextDescription = styled.p`
+  color: #222831;
+  font-weight: 200;
+  font-size: 13px;
+  letter-spacing: .5px;
+`
