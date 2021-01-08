@@ -58,7 +58,6 @@ const resolvers = {
   Org: OrgResolvers,
   Event: EventResolvers,
   Position: PositionResolvers
-
 }
 
 const schema = makeExecutableSchema({

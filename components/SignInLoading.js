@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export default function SignInLoading() {
   return (
-    <LoadBackground></LoadBackground>
+    <LoadBackground>Loading</LoadBackground>
   )
 }
 

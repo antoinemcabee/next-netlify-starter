@@ -34,6 +34,7 @@ const StyledList = styled.ul`
     display: flex;
     justify-content: space-around;
     width: 100%;
+    margin-top: 4rem;
 `
 const ListItem = styled.div`
     width: 100%;
@@ -48,11 +49,6 @@ const StyledTab = styled.li`
     outline: none;
     text-decoration: none;
     cursor: pointer;
-
-    &:hover {
-        text-decoration: underline;
-        text-decoration-color: white;
-    }
 `
 const ActiveTab = styled(StyledTab)`
     border-bottom: 4px solid rgba(225,224,225);

@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
+import getUser from './getUser'
 require('dotenv').config()
  
 const options = {
@@ -10,7 +11,6 @@ const options = {
     Providers.Credentials({
       name: 'Credentials',
       authorize: async (credentials) => {
-        
         const user = credentials
           // You need to provide your own logic here that takes the credentials
           // submitted and returns either a object representing a user or value
@@ -29,14 +29,28 @@ const options = {
   pages: {
     signIn: '/auth/signin',
     // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
+    error: '/auth/error', // Error code passed in query string as ?error=
     //newUser: null // If set, new users will be directed here on first sign in
   },
 
   callbacks: {
     signIn: async (user, account, profile) => {
-      //console.log(user)
-      return Promise.resolve(user)
+      const dbUser =  await getUser({email: user.email, password: user.password, dbCollection: "orgs"})
+      let isAllowedToSignIn = null
+      
+      if(dbUser === null) return Promise.resolve(false)
+      
+      user.password = dbUser.password
+      user.name = dbUser.name
+      user.industry = dbUser.industry
+      user.phone = dbUser.phone
+      user.address = dbUser.adressOne
+      user.description = dbUser.description
+      
+      if(dbUser) isAllowedToSignIn = true
+      if (isAllowedToSignIn) {
+        return Promise.resolve(user)
+      }
     },
     jwt: async (token, user, account, profile, isNewUser) => {
       //  "user" parameter is the object received from "authorize"
@@ -47,7 +61,10 @@ const options = {
       return Promise.resolve(token)   // ...here
     },
     session: async (session, user) => {
-      session = user.user
+      delete user.email
+      
+      session = user
+
       return Promise.resolve(session)
     }, 
   },

@@ -4,7 +4,7 @@ import { createGlobalStyle } from 'styled-components'
 export default function MyApp({ Component, pageProps }) {
     return (
         <Provider session={pageProps.session}>
-            <GlobalStyle />
+                <GlobalStyle />
                 <Component {...pageProps} />
         </Provider> //passing user session to pages
     )
@@ -71,7 +71,7 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: 'Gotham Rounded Book', sans-serif, Arial, Helvetica;
+        font-family: 'Gotham Rounded', sans-serif, Arial, Helvetica;
     }
 
   

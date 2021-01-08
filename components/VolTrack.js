@@ -2,7 +2,7 @@ import {useCallback} from 'react'
 import {LoginInput} from './LoginInput'
 import styled from 'styled-components'
 
-export default function VolTrack({ state, data, handleChange }) {
+export default function VolTrack({state, data, handleChange }) {
 
   const handleVolChange = useCallback((e) => {
     handleChange(e, 'vol')
@@ -13,8 +13,8 @@ export default function VolTrack({ state, data, handleChange }) {
       case 0:
         return (
           <>
-            <LoginInput type='text' name='fisrt' placeholder='First Name' value={data.name} onChange={handleVolChange}/>
-            <LoginInput type='text' name='last' placeholder='Last Name' value={data.industry} onChange={handleVolChange}/>
+            <LoginInput type='text' name='first' placeholder='First Name' value={data.first} onChange={handleVolChange}/>
+            <LoginInput type='text' name='last' placeholder='Last Name' value={data.last} onChange={handleVolChange}/>
             <LoginInput type='text' name='email' placeholder='Organization Email' value={data.email} onChange={handleVolChange}/>
             <LoginInput type='text' name='phone' placeholder='Organzation Phone' value={data.phone} onChange={handleVolChange}/>
           </>
@@ -35,13 +35,3 @@ export default function VolTrack({ state, data, handleChange }) {
     </>
   )
 }
-
-const StyledInput = styled.input`
-  width: 100%;
-  background: none;
-  color: white;
-  border: none;
-  border-bottom: 1px solid #e1e1e1;
-  margin-top: 3vh;
-  padding: 5px 0;
-`

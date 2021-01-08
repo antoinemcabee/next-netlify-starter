@@ -1,40 +1,37 @@
-import React from 'react'
-import { client } from '../clients/index'
+import { useEffect } from 'react'
+import { client } from '../clients'
 import { ApolloProvider } from "@apollo/react-hooks";
 import { signIn, signOut, useSession } from 'next-auth/client'
-
-// import Header from '../components/Header'
-
 import "reflect-metadata";
 
 const App = ({ data }) => {
 
   const [session, loading] = useSession()
-
+  
   if (loading) {
     return <p>Loading...</p>
   }
 
   return (
     <ApolloProvider client={client}>
-      <div>
-        {!session && (
-          <>
-            Not signed in <br />
-            <button onClick={signIn}>Sign In</button>
-          </>
-        )}
-
-        {
-          session && (
+        <div>
+          {!session && (
             <>
-              Signed in as {session.email} <br />
-              <div>You can now access our super secret pages</div>
-              <button onClick={signOut}>Sign Out</button>
+              Not signed in <br />
+              <button onClick={() => signIn(null, {callbackUrl: 'http://localhost:3000/org-dashboard'})}>Sign In</button>
             </>
-          )
-        }
-      </div>
+          )}
+
+          {
+            session && (
+              <>
+                Signed in as {session.user.email} <br />
+                <div>You can now access our super secret pages</div>
+                <button onClick={signOut}>Sign Out</button>
+              </>
+            )
+          }
+        </div>
     </ApolloProvider>
   );
 };

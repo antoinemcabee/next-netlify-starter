@@ -35,13 +35,3 @@ export default function OrgTrack({ state, data, handleChange }) {
     </>
   )
 }
-
-const StyledInput = styled.input`
-  width: 100%;
-  background: none;
-  color: white;
-  border: none;
-  border-bottom: 1px solid #e1e1e1;
-  margin-top: 3vh;
-  padding: 5px 0;
-`

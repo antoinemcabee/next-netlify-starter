@@ -3,7 +3,6 @@ import LoginField from '../../components/LoginField'
 import SignInLayout from '../../components/layouts/SignInLayout'
 import SignInLoading from '../../components/SignInLoading'
 import { getCsrfToken } from 'next-auth/client'
-
 export default function SignInPage() {
 
     const [csrfToken, setCsrfToken] = useState(null)
@@ -19,6 +18,6 @@ export default function SignInPage() {
     return (
         <SignInLayout header={'Welcome'}>
             <LoginField csrfToken={csrfToken} />
-        </SignInLayout>             
+        </SignInLayout>
     )
 }
