@@ -8,30 +8,19 @@ export default function VolTrack({state, data, handleChange }) {
     handleChange(e, 'vol')
   })
 
-  const renderSwitch = (state) => {
-    switch(state) {
-      case 0:
-        return (
-          <>
-            <LoginInput type='text' name='first' placeholder='First Name' value={data.first} onChange={handleVolChange}/>
-            <LoginInput type='text' name='last' placeholder='Last Name' value={data.last} onChange={handleVolChange}/>
-            <LoginInput type='text' name='email' placeholder='Organization Email' value={data.email} onChange={handleVolChange}/>
-            <LoginInput type='text' name='phone' placeholder='Organzation Phone' value={data.phone} onChange={handleVolChange}/>
-          </>
-        )
-      case 1: 
-        return (
-          <>
-            <LoginInput type='text' name='address' placeholder='1 Address' value={data.address} onChange={handleVolChange}/>
-            <LoginInput type='text' name='other' placeholder='City, State, Zip' value={data.other} onChange={handleVolChange}/>
-          </>
-        )
-    }
-  }
-
-  return (
+  const trackSlides = [
     <>
-      {renderSwitch(state)}
+      <LoginInput type='text' name='first' placeholder='First Name' value={data.first} onChange={handleVolChange}/>
+      <LoginInput type='text' name='last' placeholder='Last Name' value={data.last} onChange={handleVolChange}/>
+      <LoginInput type='text' name='email' placeholder='Organization Email' value={data.email} onChange={handleVolChange}/>
+      <LoginInput type='text' name='phone' placeholder='Organzation Phone' value={data.phone} onChange={handleVolChange}/>
+    </>,
+    <>
+      <LoginInput type='text' name='address' placeholder='1 Address' value={data.address} onChange={handleVolChange}/>
+      <LoginInput type='text' name='other' placeholder='City, State, Zip' value={data.other} onChange={handleVolChange}/>
     </>
+  ]
+  return (
+    trackSlides[state]
   )
 }

@@ -22,6 +22,7 @@ const getUser = async ({email, password, dbCollection}) => {
         const collection = client.db("volunteer_site").collection(dbCollection);
         let query = { email: email, }
         let user = await collection.findOne(query);
+        if(!user) return null
 
         const validPassword = await bcrypt.compare(password, user.password);
 

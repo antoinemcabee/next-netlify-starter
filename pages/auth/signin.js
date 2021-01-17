@@ -1,23 +1,11 @@
-import { useEffect, useState } from 'react'
-import LoginField from '../../components/LoginField'
-import SignInLayout from '../../components/layouts/SignInLayout'
-import SignInLoading from '../../components/SignInLoading'
-import { getCsrfToken } from 'next-auth/client'
-export default function SignInPage() {
+import {useRouter} from 'next/router'
 
-    const [csrfToken, setCsrfToken] = useState(null)
-    useEffect(() => {
-        (async () => {
-            const csrfToken = await getCsrfToken()
-            setCsrfToken(csrfToken)
-        })()
-    }, [])
+export default function SignIn(){
 
-    if (!csrfToken) return <SignInLoading/>
+  if(process.browser) useRouter().push('/')
+  
+  return (
+    <></>
+  )
 
-    return (
-        <SignInLayout header={'Welcome'}>
-            <LoginField csrfToken={csrfToken} />
-        </SignInLayout>
-    )
-}
+};

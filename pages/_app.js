@@ -1,11 +1,17 @@
 import {Provider} from 'next-auth/client'
+import SignUpProvider from '../context/SignUpContext'
+import SignInProvider from '../context/SignInContext'
 import { createGlobalStyle } from 'styled-components'
 
 export default function MyApp({ Component, pageProps }) {
     return (
         <Provider session={pageProps.session}>
-                <GlobalStyle />
-                <Component {...pageProps} />
+        <SignUpProvider>
+        <SignInProvider>
+            <GlobalStyle />
+            <Component {...pageProps} />
+        </SignInProvider>
+        </SignUpProvider>
         </Provider> //passing user session to pages
     )
 }

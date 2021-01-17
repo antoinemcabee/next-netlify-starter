@@ -1,45 +1,37 @@
-import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { StyledHeader } from '../../components/StyledText'
-import Tabs from '../../components/Tabs'
-import childrenWithProps from '../../utils/childrenWithProps'
-// import { useAuth } from '../../context/auth-context'
+import SignInTabs from '../../components/SignInTabs'
 
-export default function SignInLayout({children, header}) {
+export default function SignInLayout({activeTab, pageType, header, children}) {
 
-  const tabTitles = ['Organization', 'Volunteer']
-  const [activeTab, setActiveTab] = useState(0)
-  const tabData = [tabTitles, activeTab, setActiveTab]
+  
 
   return (
     <Container>
         <PageHeader>{header}</PageHeader>
-            <StyledTab tabData={tabData} />
-            {childrenWithProps(children, {loginType: tabTitles[activeTab]})}
+            <SignInTabs activeTab={activeTab} pageType={pageType}/>
+            {children}
         <Copyright>{`© 2021 VolunteerSite.com`}</Copyright>
     </Container>
   )
 
 }
 
-const StyledTab = styled(Tabs)`
-  margin-top: 5rem;
-`
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #222831;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
 `
 const PageHeader = styled(StyledHeader)`
-  padding-top: 20vh;
+  padding-top: 10vh;
   padding-bottom: 5vh;
 `   
 const Copyright = styled.p`
-  position: absolute;
-  bottom: 2vh;
+  
+  margin: 3vh;
   font-size: 10px;
   color: #d0d0d0;
 `

@@ -1,4 +1,4 @@
-import { useSession, getSession } from 'next-auth/client'
+import { useSession, getSession, signOut } from 'next-auth/client'
 import styled from 'styled-components'
 import { ContentHeader, TextDescription } from '../components/StyledText'
 import { Container } from '../components/StyledContainer'
@@ -65,6 +65,7 @@ export default function OrgDashboard() {
             <DashboardCards key={item.title} content={item} />
           )) }
         </CardContainer>
+        <button onClick={() => signOut({callbackUrl: 'http://localhost:3000/auth/signin'})}>signout</button>
       </Container>
     </BG>
   )
